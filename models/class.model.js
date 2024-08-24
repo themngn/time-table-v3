@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const groupSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     day_of_week: {
         type: String,
         required: true,

@@ -6,8 +6,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/groups", require("./routes/group.route"));
 app.use("/api/choices", require("./routes/choice.route"));
-// app.use("/api/courses", require("./routes/course.route"));
-// app.use("/api/classes", require("./routes/class.route"));
+app.use("/api/courses", require("./routes/course.route"));
+app.use("/api/classes", require("./routes/class.route"));
 
 db_user = process.env.DB_USER;
 db_password = process.env.DB_PASSWORD;
