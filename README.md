@@ -18,8 +18,7 @@ Simple full stack web application to create and manage time tables for schools, 
 
 Example:
 
-Group named "Copmuter engineering" with 2 courses: "Math", "Physics", and 1 subchoice "Foreign language".
-
+-   Group named "Copmuter engineering" with 2 courses: "Math", "Physics", and 1 subchoice "Foreign language".
 -   Subchoice "Foreign language" with 4 groups: "A1", "A2", "B1", "B2".
 -   Each of the 4 groups has 1 courses at respective levels.
 -   All courses have lessons with their schedules.
