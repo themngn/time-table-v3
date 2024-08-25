@@ -4,7 +4,7 @@ Simple full stack web application to create and manage time tables for schools, 
 
 ## Branches
 
--   **['front-end'](https://example.com) branch contains the frontend code of the application write with Vue.js.**
+-   **['front-end'](https://gitlab.com/mngn/time-table-v3/-/tree/front-end) branch contains the frontend code of the application write with Vue.js.**
 -   **['back-end'](https://gitlab.com/mngn/time-table-v3/-/tree/back-end) branch contains the backend code of the application write with node.js.**
 
 ## Structure
