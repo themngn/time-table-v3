@@ -56,5 +56,28 @@ const deleteGroup = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+//get all classes of all courses of a group
+const getTimetable = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const group = await Group.findById(id).populate({
+            path: "courses",
+            populate: { path: "classes" },
+        });
+        if (!group) {
+            return res.status(404).json({ message: "Group not found" });
+        }
+        res.status(200).json(group.courses);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
-module.exports = { getGroups, createGroup, getGroup, updateGroup, deleteGroup };
+module.exports = {
+    getGroups,
+    createGroup,
+    getGroup,
+    updateGroup,
+    deleteGroup,
+    getTimetable,
+};

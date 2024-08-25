@@ -1,13 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+let corsOptions = {
+    origin: [process.env.FRONTEND_URL],
+};
+
+app.use(cors(corsOptions));
 
 app.use("/api/groups", require("./routes/group.route"));
 app.use("/api/choices", require("./routes/choice.route"));
 app.use("/api/courses", require("./routes/course.route"));
 app.use("/api/classes", require("./routes/class.route"));
+app.use("/api/users", require("./routes/user.route"));
 
 db_user = process.env.DB_USER;
 db_password = process.env.DB_PASSWORD;
