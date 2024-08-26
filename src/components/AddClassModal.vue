@@ -11,14 +11,14 @@
                         v-text="day"
                     ></option>
                 </select>
-                <label for="isWeekly">Is {{ isWeekly }}</label>
+                <label for="isWeekly">Регулярність</label>
                 <form class="line radio">
                     <input type="radio" v-model="isWeekly" value="weekly" />
-                    <label for="weekly">Weekly</label>
-                    <input type="radio" v-model="isWeekly" value="first" />
-                    <label for="first">First</label>
+                    <label class="radiochoice" for="weekly">Кожен</label>
                     <input type="radio" v-model="isWeekly" value="second" />
-                    <label for="second">Second</label>
+                    <label class="radiochoice" for="second">Чисельник</label>
+                    <input type="radio" v-model="isWeekly" value="first" />
+                    <label class="radiochoice" for="first">Знаменник</label>
                 </form>
                 <label for="start_time">Start Time</label>
                 <VueDatePicker
@@ -99,8 +99,12 @@ export default {
     methods: {
         async addClass(courseID) {
             console.log("adding class");
-            let start_time = `${this.start_time.hours}:${this.start_time.minutes}`;
-            let end_time = `${this.end_time.hours}:${this.end_time.minutes}`;
+            let start_time = `${this.start_time.hours}:${this.start_time.minutes
+                .toString()
+                .padStart(2, "0")}`;
+            let end_time = `${this.end_time.hours}:${this.end_time.minutes
+                .toString()
+                .padStart(2, "0")}`;
             let biweekly = this.isWeekly == "weekly" ? false : true;
             let biweekly_week = this.isWeekly === "first" ? false : true;
 
@@ -139,7 +143,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.5);
 }
 .modal-container {
-    width: 300px;
+    width: 400px;
     margin: 150px auto;
     padding: 20px 30px;
     border-radius: 2px;
@@ -153,6 +157,15 @@ export default {
 .line {
     margin-bottom: 1rem;
     height: 38px;
+}
+.radio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.radiochoice {
+    margin-right: 1.5rem;
+    margin-left: 0.25rem;
 }
 select {
     background-color: #222;

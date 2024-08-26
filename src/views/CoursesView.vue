@@ -26,7 +26,8 @@
                         {{ classData.start_time }}-{{ classData.end_time }}
                         {{ classData.type }}
                         <div v-if="classData.biweekly == true">
-                            Every {{ classData.biweekly_week }}
+                            <div v-if="classData.biweekly_week">Чисельник</div>
+                            <div v-else>Знаменник</div>
                         </div>
                         <button
                             class="deleteButton"
@@ -47,7 +48,9 @@
         </ul>
         <div class="addBlock">
             <input class="addBlockPart" type="text" v-model="courseName" />
-            <button class="addBlockPart" @click="addClass()">Add Class</button>
+            <button class="addBlockPart" @click="createCourse()">
+                New Course
+            </button>
         </div>
     </div>
     <AddClassModal
@@ -68,6 +71,7 @@ export default {
             courses: [],
             activeCourse: null,
             modalOpen: false,
+            courseName: "",
         };
     },
     methods: {
@@ -102,6 +106,17 @@ export default {
                 }
             );
             this.fetchCourses();
+        },
+        createCourse() {
+            fetch("http://localhost:3000/api/courses", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name: this.courseName }),
+            }).then(() => {
+                this.fetchCourses();
+            });
         },
     },
     mounted() {
@@ -197,5 +212,7 @@ button .addBlockPart {
     border: 0;
     color: #fff;
     width: 40%;
+    border-radius: 5px;
+    padding: 0.5rem;
 }
 </style>
