@@ -30,7 +30,7 @@
                         </div>
                         <button
                             class="deleteButton"
-                            @click="deleteClass(classData._id)"
+                            @click="deleteClass(course._id, classData._id)"
                         >
                             X
                         </button>
@@ -45,6 +45,10 @@
                 </button>
             </li>
         </ul>
+        <div class="addBlock">
+            <input class="addBlockPart" type="text" v-model="courseName" />
+            <button class="addBlockPart" @click="addClass()">Add Class</button>
+        </div>
     </div>
     <AddClassModal
         v-if="modalOpen"
@@ -81,7 +85,6 @@ export default {
                 }
             );
             let classDetails = await response.json();
-            console.log(classDetails);
             course.classesData = classDetails;
         },
         syncFetch(course) {
@@ -91,9 +94,9 @@ export default {
             this.activeCourse = courseID;
             this.modalOpen = true;
         },
-        async deleteClass(classID) {
+        async deleteClass(courseID, classID) {
             const response = await fetch(
-                `http://localhost:3000/api/classes/${classID}`,
+                `http://localhost:3000/api/courses/${courseID}/classes/${classID}`,
                 {
                     method: "DELETE",
                 }
@@ -173,5 +176,26 @@ h3 {
 }
 .deleteButton:active {
     background-color: rgb(207, 100, 100);
+}
+ul {
+    padding: 0;
+}
+.addBlock {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+button .addBlockPart {
+    background-color: #333;
+}
+.addBlockPart {
+    margin-bottom: 1rem;
+    height: 38px;
+    background-color: #333;
+    border: 0;
+    color: #fff;
+    width: 40%;
 }
 </style>
