@@ -87,6 +87,27 @@ const createClass = async (req, res) => {
     }
 };
 
+//remove class from a course and delete it
+const deleteClass = async (req, res) => {
+    try {
+        const { id, classId } = req.params;
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        const classIndex = course.classes.indexOf(classId);
+        if (classIndex === -1) {
+            return res.status(404).json({ message: "Class not found" });
+        }
+        course.classes.splice(classIndex, 1);
+        await course.save();
+        await Class.findByIdAndDelete(classId);
+        res.status(200).json({ message: "Class deleted" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 module.exports = {
     getCourses,
     createCourse,
@@ -95,4 +116,5 @@ module.exports = {
     deleteCourse,
     getCourseClasses,
     createClass,
+    deleteClass,
 };
