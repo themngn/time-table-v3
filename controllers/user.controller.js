@@ -59,6 +59,30 @@ const deleteUser = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+//get all possible choices of a user from all groups
+const getAllPossibleChoices = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).populate({
+            path: "groups",
+            populate: {
+                path: "subchoices",
+                populate: { path: "subgroups" },
+            },
+        });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const choices = user.groups.reduce((acc, group) => {
+            acc.push(...group.subchoices);
+            return acc;
+        }, []);
+        res.status(200).json(choices);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 //get all gropus of a user, then get all courses of each group, then get all classes of each course
 const getTimetable = async (req, res) => {
     try {
@@ -91,4 +115,5 @@ module.exports = {
     updateUser,
     deleteUser,
     getTimetable,
+    getAllPossibleChoices,
 };

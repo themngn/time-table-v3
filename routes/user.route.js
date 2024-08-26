@@ -8,6 +8,7 @@ const {
     updateUser,
     deleteUser,
     getTimetable,
+    getAllPossibleChoices,
 } = require("../controllers/user.controller");
 
 router.get("/", getUsers);
@@ -16,5 +17,6 @@ router.get("/:id", getUser);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id/timetable", getTimetable);
+router.get("/:id/choices", getAllPossibleChoices);
 
 module.exports = router;
