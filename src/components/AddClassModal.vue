@@ -12,14 +12,14 @@
                     ></option>
                 </select>
                 <label for="isWeekly">Is {{ isWeekly }}</label>
-                <div class="line radio">
-                    <input type="radio" v-model="isWeekly" :value="weekly" />
+                <form class="line radio">
+                    <input type="radio" v-model="isWeekly" value="weekly" />
                     <label for="weekly">Weekly</label>
-                    <input type="radio" v-model="isWeekly" :value="first" />
+                    <input type="radio" v-model="isWeekly" value="first" />
                     <label for="first">First</label>
-                    <input type="radio" v-model="isWeekly" :value="second" />
+                    <input type="radio" v-model="isWeekly" value="second" />
                     <label for="second">Second</label>
-                </div>
+                </form>
                 <label for="start_time">Start Time</label>
                 <VueDatePicker
                     class="line"
@@ -101,8 +101,9 @@ export default {
             console.log("adding class");
             let start_time = `${this.start_time.hours}:${this.start_time.minutes}`;
             let end_time = `${this.end_time.hours}:${this.end_time.minutes}`;
-            console.log(start_time, end_time);
-            console.log(this.day_of_week, this.type);
+            let biweekly = this.isWeekly == "weekly" ? false : true;
+            let biweekly_week = this.isWeekly === "first" ? false : true;
+
             const response = await fetch(
                 `http://localhost:3000/api/courses/${courseID}/classes`,
                 {
@@ -115,10 +116,14 @@ export default {
                         start_time: start_time,
                         end_time: end_time,
                         type: this.type,
+                        biweekly: biweekly,
+                        biweekly_week: biweekly_week,
                     }),
                 }
             );
             console.log(response);
+            this.$emit("refresh");
+            this.$emit("close");
         },
     },
 };

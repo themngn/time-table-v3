@@ -10,6 +10,7 @@
                     @click="syncFetch(course)"
                 >
                     Load Classes
+                    {{ fetchClassDetails(course) }}
                 </button>
                 <div v-else-if="course.classesData.length == 0">
                     <ul class="classDataList">
@@ -24,6 +25,15 @@
                         {{ classData.day_of_week }}
                         {{ classData.start_time }}-{{ classData.end_time }}
                         {{ classData.type }}
+                        <div v-if="classData.biweekly == true">
+                            Every {{ classData.biweekly_week }}
+                        </div>
+                        <button
+                            class="deleteButton"
+                            @click="deleteClass(classData._id)"
+                        >
+                            X
+                        </button>
                     </li>
                 </ul>
                 <button
@@ -40,6 +50,7 @@
         v-if="modalOpen"
         :courseID="activeCourse"
         @close="modalOpen = false"
+        @refresh="fetchCourses"
     />
 </template>
 
@@ -63,7 +74,6 @@ export default {
             this.courses = await response.json();
         },
         async fetchClassDetails(course) {
-            console.log("fetching class details");
             const response = await fetch(
                 `http://localhost:3000/api/courses/${course._id}/classes`,
                 {
@@ -80,6 +90,15 @@ export default {
         addClass(courseID) {
             this.activeCourse = courseID;
             this.modalOpen = true;
+        },
+        async deleteClass(classID) {
+            const response = await fetch(
+                `http://localhost:3000/api/classes/${classID}`,
+                {
+                    method: "DELETE",
+                }
+            );
+            this.fetchCourses();
         },
     },
     mounted() {
@@ -98,9 +117,20 @@ h1 {
 }
 .classData {
     list-style-type: none;
+    background-color: #555;
+    border-radius: 5px;
+    margin: 0.5rem;
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .classDataList {
     list-style: none;
+    background-color: #444;
+    border-radius: 5px;
+    padding: 0.125rem;
+    color: #fff;
 }
 .courseData {
     list-style: none;
@@ -113,6 +143,7 @@ h1 {
 h3 {
     color: white;
     font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 .loadClasses {
     background-color: #444;
@@ -120,12 +151,27 @@ h3 {
     border: 0;
     border-radius: 5px;
     padding: 0.5rem;
-    margin: 0.5rem;
+    margin-top: 1rem;
 }
 .loadClasses:hover {
     background-color: #555;
 }
 .loadClasses:active {
     background-color: #666;
+}
+.deleteButton {
+    background-color: rgb(207, 0, 0);
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    margin: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.deleteButton:hover {
+    background-color: rgb(207, 50, 50);
+}
+.deleteButton:active {
+    background-color: rgb(207, 100, 100);
 }
 </style>
