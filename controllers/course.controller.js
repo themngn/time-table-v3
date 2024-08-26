@@ -1,4 +1,5 @@
 const Course = require("../models/course.model");
+const Class = require("../models/class.model");
 
 const getCourses = async (req, res) => {
     try {
@@ -69,6 +70,22 @@ const getCourseClasses = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+//create class and add it to a course
+const createClass = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const course = await Course.findById(id);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        const newClass = await Class.create(req.body);
+        course.classes.push(newClass);
+        await course.save();
+        res.status(201).json(newClass);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 
 module.exports = {
     getCourses,
@@ -77,4 +94,5 @@ module.exports = {
     updateCourse,
     deleteCourse,
     getCourseClasses,
+    createClass,
 };
