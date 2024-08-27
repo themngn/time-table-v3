@@ -5,7 +5,11 @@
             v-model="userID"
             type="text"
             placeholder="Enter your user ID"
-            @change="fetchChoices(userID)"
+            @change="
+                fetchGroups(userID);
+                fetchChoices(userID);
+                saveUserID(userID);
+            "
         />
 
         <ul>
@@ -40,6 +44,7 @@ export default {
             userID: "",
             choices: [],
             chose: [],
+            userGroups: [],
         };
     },
     methods: {
@@ -59,11 +64,54 @@ export default {
             //fill the chose dictionary with places for the user to choose from
             this.chose = {};
             for (let i = 0; i < this.choices.length; i++) {
-                this.chose[this.choices[i].name] = "";
+                //if userGroups contains one of the choices, set it as the default
+                for (let j = 0; j < this.userGroups.length; j++) {
+                    console.log(this.choices[i].subgroups);
+                    for (let k = 0; k < this.choices[i].subgroups.length; k++) {
+                        console.log(this.choices[i].subgroups[k]._id);
+                        console.log(this.userGroups[j]);
+                        if (
+                            this.choices[i].subgroups[k]._id ===
+                            this.userGroups[j]
+                        ) {
+                            this.chose[this.choices[i].name] =
+                                this.userGroups[j];
+                        }
+                    }
+                    if (this.chose[this.choices[i].name] === undefined) {
+                        this.chose[this.choices[i].name] =
+                            this.choices[i].subgroups[0].name;
+                    }
+                }
             }
         },
+        async fetchGroups(userID) {
+            //check if the user ID is valid (^[0-9a-f]{24}$)
+            if (!/^[0-9a-f]{24}$/.test(userID)) {
+                alert("Invalid user ID");
+                return;
+            }
+            const response = await fetch(
+                `http://localhost:3000/api/users/${userID}`,
+                {
+                    methods: "GET",
+                }
+            );
+            this.userGroups = await response.json();
+            this.userGroups = this.userGroups.groups;
+        },
+        async saveUserID(userID) {
+            localStorage.setItem("userID", userID);
+        },
     },
-    mounted() {},
+    mounted() {
+        const userID = localStorage.getItem("userID");
+        if (userID) {
+            this.userID = userID;
+            this.fetchGroups(userID);
+            this.fetchChoices(userID);
+        }
+    },
 };
 </script>
 
