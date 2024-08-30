@@ -19,10 +19,13 @@
                     <li v-for="option in choice.subgroups">
                         <input
                             type="radio"
-                            v-model="chose[choice.name]"
-                            :value="option.name"
+                            v-model="chose[choice._id]"
+                            :value="option._id"
+                            :id="option._id"
                         />
-                        <label>{{ option.name }}</label>
+                        <label :for="option._id">{{
+                            groups[option._id]
+                        }}</label>
                     </li>
                 </ul>
             </li>
@@ -45,6 +48,7 @@ export default {
             choices: [],
             chose: [],
             userGroups: [],
+            groups: {},
         };
     },
     methods: {
@@ -74,13 +78,13 @@ export default {
                             this.choices[i].subgroups[k]._id ===
                             this.userGroups[j]
                         ) {
-                            this.chose[this.choices[i].name] =
+                            this.chose[this.choices[i]._id] =
                                 this.userGroups[j];
                         }
                     }
-                    if (this.chose[this.choices[i].name] === undefined) {
-                        this.chose[this.choices[i].name] =
-                            this.choices[i].subgroups[0].name;
+                    if (this.chose[this.choices[i]._id] === undefined) {
+                        this.chose[this.choices[i]._id] =
+                            this.choices[i].subgroups[0]._id;
                     }
                 }
             }
@@ -100,6 +104,16 @@ export default {
             this.userGroups = await response.json();
             this.userGroups = this.userGroups.groups;
         },
+        async groupList() {
+            const response = await fetch(`http://localhost:3000/api/groups`, {
+                methods: "GET",
+            });
+            let groupsStr = await response.json();
+            //parse the groups into a dictionary
+            for (let i = 0; i < groupsStr.length; i++) {
+                this.groups[groupsStr[i]._id] = groupsStr[i].name;
+            }
+        },
         async saveUserID(userID) {
             localStorage.setItem("userID", userID);
         },
@@ -110,6 +124,7 @@ export default {
             this.userID = userID;
             this.fetchGroups(userID);
             this.fetchChoices(userID);
+            this.groupList();
         }
     },
 };
