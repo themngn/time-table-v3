@@ -11,7 +11,6 @@ const groupSchema = new mongoose.Schema({
     },
     biweekly_week: {
         type: Boolean,
-        required: false,
     },
     start_time: {
         type: String,
@@ -24,6 +23,23 @@ const groupSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
+    },
+    link: {
+        type: String,
+    },
+    teacher: {
+        type: String,
+    },
+    video_link: {
+        type: String,
+    },
+    room: {
+        type: String,
+    },
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+        required: false,
     },
 });
 

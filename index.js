@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 let corsOptions = {
-    origin: [process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL, "http://10.0.1.31:5173"],
 };
 
 app.use(cors(corsOptions));
