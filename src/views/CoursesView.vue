@@ -24,7 +24,9 @@
                     >
                         {{ classData.day_of_week }}
                         {{ classData.start_time }}-{{ classData.end_time }}
-                        {{ classData.type }}
+                        {{ classData.type }};1
+                        {{ classData.teacher }}
+                        {{ classData.room }}
                         <div v-if="classData.biweekly == true">
                             <div v-if="classData.biweekly_week">Чисельник</div>
                             <div v-else>Знаменник</div>
@@ -76,14 +78,14 @@ export default {
     },
     methods: {
         async fetchCourses() {
-            const response = await fetch("http://localhost:3000/api/courses", {
+            const response = await fetch("http://10.0.1.31:3000/api/courses", {
                 methods: "GET",
             });
             this.courses = await response.json();
         },
         async fetchClassDetails(course) {
             const response = await fetch(
-                `http://localhost:3000/api/courses/${course._id}/classes`,
+                `http://10.0.1.31:3000/api/courses/${course._id}/classes`,
                 {
                     methods: "GET",
                 }
@@ -100,7 +102,7 @@ export default {
         },
         async deleteClass(courseID, classID) {
             const response = await fetch(
-                `http://localhost:3000/api/courses/${courseID}/classes/${classID}`,
+                `http://10.0.1.31:3000/api/courses/${courseID}/classes/${classID}`,
                 {
                     method: "DELETE",
                 }
@@ -108,7 +110,7 @@ export default {
             this.fetchCourses();
         },
         createCourse() {
-            fetch("http://localhost:3000/api/courses", {
+            fetch("http://10.0.1.31:3000/api/courses", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

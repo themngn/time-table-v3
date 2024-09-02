@@ -10,13 +10,24 @@ import HelloWorld from "./components/HelloWorld.vue";
             <RouterLink to="/admin">Admin</RouterLink>
             <RouterLink to="/courses">Courses</RouterLink>
             <RouterLink to="/user">User</RouterLink>
+            <RouterLink to="/timetable">Timetable</RouterLink>
         </nav>
     </header>
 
-    <RouterView />
+    <RouterView class="rv" />
 </template>
 
 <style scoped>
+body,
+html,
+template {
+    margin: 0;
+    padding: 0;
+}
+#app {
+    margin: 0px;
+    padding: 0px;
+}
 header {
     line-height: 2;
 }

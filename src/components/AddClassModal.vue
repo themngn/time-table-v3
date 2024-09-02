@@ -34,6 +34,45 @@
                     time-picker
                     dark
                 />
+                <label>Presets</label>
+                <div class="pref-zone">
+                    <button
+                        class="prefbutton"
+                        @click="
+                            start_time = { hours: 8, minutes: 40 };
+                            end_time = { hours: 10, minutes: 15 };
+                        "
+                    >
+                        1 Пара
+                    </button>
+                    <button
+                        class="prefbutton"
+                        @click="
+                            start_time = { hours: 10, minutes: 35 };
+                            end_time = { hours: 12, minutes: 10 };
+                        "
+                    >
+                        2 Пара
+                    </button>
+                    <button
+                        class="prefbutton"
+                        @click="
+                            start_time = { hours: 12, minutes: 20 };
+                            end_time = { hours: 13, minutes: 55 };
+                        "
+                    >
+                        3 Пара
+                    </button>
+                    <button
+                        class="prefbutton"
+                        @click="
+                            start_time = { hours: 14, minutes: 5 };
+                            end_time = { hours: 15, minutes: 40 };
+                        "
+                    >
+                        4 Пара
+                    </button>
+                </div>
                 <label for="type">Type</label>
                 <select class="line" id="type" v-model="type">
                     <option
@@ -43,6 +82,24 @@
                         v-text="type"
                     ></option>
                 </select>
+                <label for="teacher">Teacher</label>
+                <input
+                    class="line"
+                    type="text"
+                    id="teacher"
+                    v-model="teacher"
+                />
+                <label for="link">Link</label>
+                <input class="line" type="text" id="link" v-model="link" />
+                <label for="video_link">Video Link</label>
+                <input
+                    class="line"
+                    type="text"
+                    id="video_link"
+                    v-model="video_link"
+                />
+                <label for="room">Room</label>
+                <input class="line" type="text" id="room" v-model="room" />
                 <button
                     class="button create"
                     type="submit"
@@ -64,6 +121,7 @@
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import { h } from "vue";
 
 export default {
     props: {
@@ -94,6 +152,10 @@ export default {
             ],
             isWeekly: "weekly",
             types: ["Lecture", "Seminar", "Lab", "Practicum"],
+            teacher: "",
+            link: "",
+            video_link: "",
+            room: "",
         };
     },
     methods: {
@@ -107,9 +169,12 @@ export default {
                 .padStart(2, "0")}`;
             let biweekly = this.isWeekly == "weekly" ? false : true;
             let biweekly_week = this.isWeekly === "first" ? false : true;
-
+            let teacher = this.teacher == "" ? null : this.teacher;
+            let link = this.link == "" ? null : this.link;
+            let video_link = this.video_link == "" ? null : this.video_link;
+            let room = this.room == "" ? null : this.room;
             const response = await fetch(
-                `http://localhost:3000/api/courses/${courseID}/classes`,
+                `http://10.0.1.31:3000/api/courses/${courseID}/classes`,
                 {
                     method: "POST",
                     headers: {
@@ -122,6 +187,10 @@ export default {
                         type: this.type,
                         biweekly: biweekly,
                         biweekly_week: biweekly_week,
+                        teacher: teacher,
+                        link: link,
+                        video_link: video_link,
+                        room: room,
                     }),
                 }
             );
@@ -144,7 +213,7 @@ export default {
 }
 .modal-container {
     width: 400px;
-    margin: 150px auto;
+    margin: 25px auto;
     padding: 20px 30px;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
@@ -182,6 +251,33 @@ select {
     cursor: pointer;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+}
+.prefbutton {
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    flex-grow: 1;
+}
+.pref-zone {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+input {
+    background-color: #222;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 0.5rem;
 }
 .create {
     background-color: #4caf50;
