@@ -121,7 +121,6 @@
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { h } from "vue";
 
 export default {
     props: {
@@ -173,27 +172,24 @@ export default {
             let link = this.link == "" ? null : this.link;
             let video_link = this.video_link == "" ? null : this.video_link;
             let room = this.room == "" ? null : this.room;
-            const response = await fetch(
-                `http://10.0.1.31:3000/api/courses/${courseID}/classes`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        day_of_week: this.day_of_week,
-                        start_time: start_time,
-                        end_time: end_time,
-                        type: this.type,
-                        biweekly: biweekly,
-                        biweekly_week: biweekly_week,
-                        teacher: teacher,
-                        link: link,
-                        video_link: video_link,
-                        room: room,
-                    }),
-                }
-            );
+            const response = await fetch(`/api/courses/${courseID}/classes`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    day_of_week: this.day_of_week,
+                    start_time: start_time,
+                    end_time: end_time,
+                    type: this.type,
+                    biweekly: biweekly,
+                    biweekly_week: biweekly_week,
+                    teacher: teacher,
+                    link: link,
+                    video_link: video_link,
+                    room: room,
+                }),
+            });
             console.log(response);
             this.$emit("refresh");
             this.$emit("close");

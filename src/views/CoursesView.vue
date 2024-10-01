@@ -78,18 +78,15 @@ export default {
     },
     methods: {
         async fetchCourses() {
-            const response = await fetch("http://10.0.1.31:3000/api/courses", {
+            const response = await fetch(`/api/courses`, {
                 methods: "GET",
             });
             this.courses = await response.json();
         },
         async fetchClassDetails(course) {
-            const response = await fetch(
-                `http://10.0.1.31:3000/api/courses/${course._id}/classes`,
-                {
-                    methods: "GET",
-                }
-            );
+            const response = await fetch(`/api/courses/${course._id}/classes`, {
+                methods: "GET",
+            });
             let classDetails = await response.json();
             course.classesData = classDetails;
         },
@@ -102,7 +99,9 @@ export default {
         },
         async deleteClass(courseID, classID) {
             const response = await fetch(
-                `http://10.0.1.31:3000/api/courses/${courseID}/classes/${classID}`,
+                `${
+                    import.meta.env.VITE_BASE_URL
+                }/api/courses/${courseID}/classes/${classID}`,
                 {
                     method: "DELETE",
                 }
@@ -110,7 +109,7 @@ export default {
             this.fetchCourses();
         },
         createCourse() {
-            fetch("http://10.0.1.31:3000/api/courses", {
+            fetch(`/api/courses`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

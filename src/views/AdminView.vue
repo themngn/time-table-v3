@@ -31,15 +31,13 @@ export default {
     },
     methods: {
         async fetchGroups() {
-            const response = await fetch("http://localhost:3000/api/groups", {
+            const response = await fetch(`/api/groups`, {
                 methods: "GET",
             });
             this.groups = await response.json();
         },
         async fetchTimetable(id) {
-            const response = await fetch(
-                `http://localhost:3000/api/groups/${id}/timetable`
-            );
+            const response = await fetch(`/api/groups/${id}/timetable`);
             this.timetable = await response.json();
             console.log(this.timetable);
         },

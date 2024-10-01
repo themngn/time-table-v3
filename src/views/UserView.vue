@@ -49,6 +49,7 @@ export default {
             chose: [],
             userGroups: [],
             groups: {},
+            url: import.meta.env.BASE_URL,
         };
     },
     methods: {
@@ -58,12 +59,9 @@ export default {
                 alert("Invalid user ID");
                 return;
             }
-            const response = await fetch(
-                `http://localhost:3000/api/users/${userID}/choices`,
-                {
-                    methods: "GET",
-                }
-            );
+            const response = await fetch(`/api/users/${userID}/choices`, {
+                methods: "GET",
+            });
             this.choices = await response.json();
             //fill the chose dictionary with places for the user to choose from
             this.chose = {};
@@ -95,17 +93,14 @@ export default {
                 alert("Invalid user ID");
                 return;
             }
-            const response = await fetch(
-                `http://localhost:3000/api/users/${userID}`,
-                {
-                    methods: "GET",
-                }
-            );
+            const response = await fetch(`/api/users/${userID}`, {
+                methods: "GET",
+            });
             this.userGroups = await response.json();
             this.userGroups = this.userGroups.groups;
         },
         async groupList() {
-            const response = await fetch(`http://localhost:3000/api/groups`, {
+            const response = await fetch(`/api/groups`, {
                 methods: "GET",
             });
             let groupsStr = await response.json();

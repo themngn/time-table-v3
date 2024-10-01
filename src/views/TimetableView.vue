@@ -1,9 +1,8 @@
 <template>
-    <h1 v-if="offlineMode">Режим Офлайн</h1>
     <div class="course">
         <div class="days">
             <div class="weekday" v-for="day in days">
-                <div class="day-title">{{ daysInUkr[days] }}</div>
+                <div class="day-title">{{ daysInUkr[day] }}</div>
                 <div class="classes">
                     <div
                         class="class"
@@ -100,12 +99,9 @@ export default {
                 alert("Invalid user ID");
                 return;
             }
-            const response = await fetch(
-                `http://10.0.1.31:3000/api/users/${userID}/timetable`,
-                {
-                    methods: "GET",
-                }
-            ).then((response) => {
+            const response = await fetch(`/api/users/${userID}/timetable`, {
+                methods: "GET",
+            }).then((response) => {
                 if (response.status == 404) {
                     this.offlineMode = true;
                     return;
