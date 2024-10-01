@@ -1,4 +1,5 @@
 console.log("Starting server..[MNG_TEST]");
+console.log("FRONTEND_URL: " + process.env.FRONTEND_URL);
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
