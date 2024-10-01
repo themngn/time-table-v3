@@ -6,6 +6,7 @@ const app = express();
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const port = process.env.PORT || 10000;
 
 let corsOptions = {
     origin: [process.env.FRONTEND_URL, "http://10.0.1.31:5173"],
@@ -27,7 +28,7 @@ mongoose
     )
     .then(() => {
         console.log("Connected to the database!");
-        app.listen(3000, () => {
+        app.listen(port, () => {
             console.log("Server is running on port 3000");
         });
     })
